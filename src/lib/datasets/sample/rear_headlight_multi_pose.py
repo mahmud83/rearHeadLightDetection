@@ -224,7 +224,7 @@ if __name__ == '__main__':
     opt = opts()
     opt = opt.init()
     dataSet = TestDataSet(opt, 'train')
-    dataLoader = DataLoader(dataset=dataSet, batch_size=1, shuffle=False)
+    dataLoader = DataLoader(dataset=dataSet, batch_size=1, shuffle=True)
 
     d = {}
     for i, ret in enumerate(dataLoader):
@@ -238,7 +238,5 @@ if __name__ == '__main__':
         d['gt'] = ret['meta']['gt_det'].data.numpy().tolist()
         d = json.dumps(d)
         break
-
-
     with open("debug.json", "w") as f:
         f.write(d)
