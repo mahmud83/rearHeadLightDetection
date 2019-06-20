@@ -11,7 +11,7 @@ import os
 import torch.utils.data as data
 
 
-class COCOHP(data.Dataset):
+class RearHeadLightHP(data.Dataset):
     num_classes = 1
     num_joints = 17
     default_resolution = [512, 512]

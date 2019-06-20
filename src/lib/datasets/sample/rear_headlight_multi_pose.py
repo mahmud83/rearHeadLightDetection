@@ -15,7 +15,7 @@ from utils.image import draw_dense_reg
 import math
 
 
-class MultiPoseDataset(data.Dataset):
+class RearHeadLightMultiPoseDataset(data.Dataset):
     def _coco_box_to_bbox(self, box):
         bbox = np.array([box[0], box[1], box[0] + box[2], box[1] + box[3]],
                         dtype=np.float32)
