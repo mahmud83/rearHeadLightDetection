@@ -1,3 +1,4 @@
+# -*- coding:UTF-8 -*-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -8,14 +9,21 @@ import torch
 import json
 import cv2
 import os
+import sys
+
+print(os.getcwd())
+sys.path.insert(0, os.getcwd())
 from utils.image import flip, color_aug
 from utils.image import get_affine_transform, affine_transform
 from utils.image import gaussian_radius, draw_umich_gaussian, draw_msra_gaussian
 from utils.image import draw_dense_reg
+from datasets.dataset.rear_headlight_hp import RearHeadLightHP
+from opts import opts
 import math
 
 
 class RearHeadLightMultiPoseDataset(data.Dataset):
+    # coco "bbox": [217.62,240.54,38.99,57.75], #[x,y,w,h]
     def _coco_box_to_bbox(self, box):
         bbox = np.array([box[0], box[1], box[0] + box[2], box[1] + box[3]],
                         dtype=np.float32)
@@ -28,13 +36,15 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         return border // i
 
     def __getitem__(self, index):
-        img_id = self.images[index]
-        file_name = self.coco.loadImgs(ids=[img_id])[0]['file_name']
-        img_path = os.path.join(self.img_dir, file_name)
-        ann_ids = self.coco.getAnnIds(imgIds=[img_id])
-        anns = self.coco.loadAnns(ids=ann_ids)
-        num_objs = min(len(anns), self.max_objs)
-
+        # img_id = self.images[index]
+        # file_name = self.coco.loadImgs(ids=[img_id])[0]['file_name']
+        # img_path = os.path.join(self.img_dir, file_name)
+        # ann_ids = self.coco.getAnnIds(imgIds=[img_id])
+        # anns = self.coco.loadAnns(ids=ann_ids)
+        annos = self.anno[index]
+        img_name = annos['filename'].split('//')[-1]
+        img_path = os.path.join(self.img_dir, img_name)
+        num_objs = min(len(annos['annotations']), self.max_objs)
         img = cv2.imread(img_path)
 
         height, width = img.shape[0], img.shape[1]
@@ -74,7 +84,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         if self.split == 'train' and not self.opt.no_color_aug:
             color_aug(self._data_rng, inp, self._eig_val, self._eig_vec)
         inp = (inp - self.mean) / self.std
-        inp = inp.transpose(2, 0, 1)
+        inp = inp.transpose(2, 0, 1)  # H,W,C -> C,H,W
 
         output_res = self.opt.output_res
         num_joints = self.num_joints
@@ -99,13 +109,32 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
 
         draw_gaussian = draw_msra_gaussian if self.opt.mse_loss else \
             draw_umich_gaussian
-
         gt_det = []
         for k in range(num_objs):
-            ann = anns[k]
-            bbox = self._coco_box_to_bbox(ann['bbox'])
-            cls_id = int(ann['category_id']) - 1
-            pts = np.array(ann['keypoints'], np.float32).reshape(num_joints, 3)
+            anno = annos['annotations'][k]
+            tempbbox = (anno['x'], anno['y'], anno['width'], anno['height'])
+            bbox = self._coco_box_to_bbox(tempbbox)
+            cls_id = 0
+            # change to coco kpt format
+            # v=0 表示这个关键点没有标注（这种情况下x=y=v=0）
+            # v=1 表示这个关键点标注了但是不可见(被遮挡了）
+            # v=2 表示这个关键点标注了同时也可见
+            pts = []
+            if anno['headlightVisible'] == -1:
+                pts.append(0)
+                pts.append(0)
+                pts.append(0)
+            elif anno['headlightVisible'] == 0:
+                pts.append(anno['headlight(h)']['x'])
+                pts.append(anno['headlight(h)']['y'])
+                pts.append(1)
+            elif anno['headlightVisible'] == 1:
+                pts.append(anno['headlight(h)']['x'])
+                pts.append(anno['headlight(h)']['y'])
+                pts.append(2)
+            else:
+                continue
+            pts = np.array(pts, np.float32).reshape(num_joints, 3)
             if flipped:
                 bbox[[0, 2]] = width - bbox[[2, 0]] - 1
                 pts[:, 0] = width - pts[:, 0] - 1
@@ -125,10 +154,11 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
                 ind[k] = ct_int[1] * output_res + ct_int[0]  # flatten feature map index
                 reg[k] = ct - ct_int
                 reg_mask[k] = 1
-                num_kpts = pts[:, 2].sum()
-                if num_kpts == 0:
-                    hm[cls_id, ct_int[1], ct_int[0]] = 0.9999
-                    reg_mask[k] = 0
+
+                # num_kpts = pts[:, 2].sum()
+                # if num_kpts == 0:  # no key points,no regr center error
+                #    hm[cls_id, ct_int[1], ct_int[0]] = 0.9999
+                #    reg_mask[k] = 0
 
                 hp_radius = gaussian_radius((math.ceil(h), math.ceil(w)))
                 hp_radius = self.opt.hm_gauss \
@@ -154,7 +184,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
                 gt_det.append([ct[0] - w / 2, ct[1] - h / 2,
                                ct[0] + w / 2, ct[1] + h / 2, 1] +
                               pts[:, :2].reshape(num_joints * 2).tolist() + [cls_id])
-        if rot != 0:
+        if rot != 0:  # no rotation, == 0
             hm = hm * 0 + 0.9999
             reg_mask *= 0
             kps_mask *= 0
@@ -178,6 +208,37 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         if self.opt.debug > 0 or not self.split == 'train':
             gt_det = np.array(gt_det, dtype=np.float32) if len(gt_det) > 0 else \
                 np.zeros((1, 40), dtype=np.float32)
-            meta = {'c': c, 's': s, 'gt_det': gt_det, 'img_id': img_id}
+            meta = {'c': c, 's': s, 'gt_det': gt_det, 'img_name': img_name}
             ret['meta'] = meta
         return ret
+
+
+class TestDataSet(RearHeadLightHP, RearHeadLightMultiPoseDataset):
+    pass
+
+
+if __name__ == '__main__':
+    from torch.utils.data import Dataset, DataLoader
+    import json
+
+    opt = opts()
+    opt = opt.init()
+    dataSet = TestDataSet(opt, 'train')
+    dataLoader = DataLoader(dataset=dataSet, batch_size=1, shuffle=False)
+
+    d = {}
+    for i, ret in enumerate(dataLoader):
+        print(i)
+        d['hm'] = ret['hm'].data.numpy().tolist()
+        d['hm_hp'] = ret['hm_hp'].data.numpy().tolist()
+        d['wh'] = ret['wh'].data.numpy().tolist()
+        d['img_name'] = ret['meta']['img_name']
+        d['c'] = ret['meta']['c'].data.numpy().tolist()
+        d['s'] = ret['meta']['s'].data.numpy().tolist()
+        d['gt'] = ret['meta']['gt_det'].data.numpy().tolist()
+        d = json.dumps(d)
+        break
+
+
+    with open("debug.json", "w") as f:
+        f.write(d)
