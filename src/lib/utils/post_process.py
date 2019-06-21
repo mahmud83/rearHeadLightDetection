@@ -106,12 +106,32 @@ def ctdet_post_process(dets, c, s, h, w, num_classes):
 def multi_pose_post_process(dets, c, s, h, w):
     # dets: batch x max_dets x 40
     # return list of 39 in image coord
-    ret = []
+    ret = []  # dets 1*100*40
     for i in range(dets.shape[0]):
-        bbox = transform_preds(dets[i, :, :4].reshape(-1, 2), c[i], s[i], (w, h))
+        bbox = transform_preds(dets[i, :, :4].reshape(-1, 2), c[i], s[i], (w, h))  # w = 128,h = 128
         pts = transform_preds(dets[i, :, 5:39].reshape(-1, 2), c[i], s[i], (w, h))
         top_preds = np.concatenate(
             [bbox.reshape(-1, 4), dets[i, :, 4:5],
              pts.reshape(-1, 34)], axis=1).astype(np.float32).tolist()
         ret.append({np.ones(1, dtype=np.int32)[0]: top_preds})
+    # no cls info
+    return ret  # 1*100*39
+
+
+def rearHeadLight_post_process(dets, c, s, h, w):
+    ret = []
+    for i in range(dets.shape[0]):
+        bbox = transform_preds(dets[i, :, :4].reshape(-1, 2), c[i], s[i], (w, h))  # w = 128,h = 128
+        pts = transform_preds(dets[i, :, 5:7].reshape(-1, 2), c[i], s[i], (w, h))
+        # print("bbox:", bbox.reshape(-1, 4).shape)
+        # print("dets:", dets[0, :, 4:5].shape)
+        # print("pts:", pts.reshape(-1, 2).shape)
+        # bbox: (100, 4)
+        # dets: (100, 1)
+        # pts: (150, 2)
+        top_preds = np.concatenate(
+            [bbox.reshape(-1, 4), dets[i, :, 4:5],
+             pts.reshape(-1, 2)], axis=1).astype(np.float32).tolist()
+        ret.append({np.ones(1, dtype=np.int32)[0]: top_preds})
+    # no cls info
     return ret

@@ -1,0 +1,105 @@
+python  datasets/sample/rear_headlight_multi_pose.py  rear_headlight_multi_pose --not_rand_crop --no_color_aug --debug 1
+
+self.parser.add_argument('--arch', default='dla_34',
+                         help='model architecture. Currently tested'
+                              'res_18 | res_101 | resdcn_18 | resdcn_101 |'
+
+# train
+self.parser.add_argument('--lr', type=float, default=1.25e-4,
+                         help='learning rate for batch size 32.')
+self.parser.add_argument('--lr_step', type=str, default='90,120',
+                         help='drop learning rate by 10.')
+self.parser.add_argument('--num_epochs', type=int, default=140,
+                         help='total training epochs.')
+self.parser.add_argument('--batch_size', type=int, default=32,
+                         help='batch size')
+self.parser.add_argument('--master_batch_size', type=int, default=-1,
+                         help='batch size on the master gpu.')
+self.parser.add_argument('--num_iters', type=int, default=-1,
+                         help='default: #samples / batch_size.')
+self.parser.add_argument('--val_intervals', type=int, default=5,
+                         help='number of epochs to run validation.')
+self.parser.add_argument('--trainval', action='store_true',
+                         help='include validation in training and '
+                              'test on test set')
+
+
+python main.py --dataset rear_headlight_hp rear_headlight_multi_pose --not_rand_crop --no_color_aug --exp_id rear_headlight --arch res_18 --batch_size 1 --gpus 0
+
+
+inds: tensor([[ 7341,  3951,  4091,  4679,  4085,  9238,  5630,  5246,  5755,  9484,
+          7166,  6782,  7550,  7806,  8064,  8075,  8069,  6528,  9601,  6016,
+          3945, 15492,  7428,  3205,  2684,  3456,  3311,  5893,  4741,  3054,
+          7327,  4922,  4956,  4693,  3178,  4714,  2476,  2487,  2474,  6712,
+          2225,  6985,  2483,  8483,  2491, 11293,  6477,  6351,  6071, 12410,
+          5809,  6470,  4912,  7744,  5425,  4620,  3122, 11125,  5480, 11296,
+         10673, 10993, 10792, 11170, 10679,  3600, 10172,  3724,  8640, 11231,
+         10967, 11483,  3212,  3215, 11091,  9064,  3527, 12189, 10979, 16176,
+          5289, 10983, 11211, 10219, 10986,  5673, 11369,  3027,  4131, 11087,
+          9030,  3491,  9695,  2764,  9402,  3261,     0,  3670,  2505,  4890]],
+       device='cuda:0')
+clses: tensor([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0]], device='cuda:0', dtype=torch.int32)
+ys: tensor([[ 57.,  30.,  31.,  36.,  31.,  72.,  43.,  40.,  44.,  74.,  55.,  52.,
+          58.,  60.,  63.,  63.,  63.,  51.,  75.,  47.,  30., 121.,  58.,  25.,
+          20.,  27.,  25.,  46.,  37.,  23.,  57.,  38.,  38.,  36.,  24.,  36.,
+          19.,  19.,  19.,  52.,  17.,  54.,  19.,  66.,  19.,  88.,  50.,  49.,
+          47.,  96.,  45.,  50.,  38.,  60.,  42.,  36.,  24.,  86.,  42.,  88.,
+          83.,  85.,  84.,  87.,  83.,  28.,  79.,  29.,  67.,  87.,  85.,  89.,
+          25.,  25.,  86.,  70.,  27.,  95.,  85., 126.,  41.,  85.,  87.,  79.,
+          85.,  44.,  88.,  23.,  32.,  86.,  70.,  27.,  75.,  21.,  73.,  25.,
+           0.,  28.,  19.,  38.]], device='cuda:0')
+ys: tensor([[ 45., 111., 123.,  71., 117.,  22., 126., 126., 123.,  12., 126., 126.,
+         126., 126.,   0.,  11.,   5.,   0.,   1.,   0., 105.,   4.,   4.,   5.,
+         124.,   0., 111.,   5.,   5., 110.,  31.,  58.,  92.,  85., 106., 106.,
+          44.,  55.,  42.,  56.,  49.,  73.,  51.,  35.,  59.,  29.,  77.,  79.,
+          55., 122.,  49.,  70.,  48.,  64.,  49.,  12.,  50., 117., 104.,  32.,
+          49., 113.,  40.,  34.,  55.,  16.,  60.,  12.,  64.,  95.,  87.,  91.,
+          12.,  15.,  83., 104.,  71.,  29.,  99.,  48.,  41., 103.,  75., 107.,
+         106.,  41., 105.,  83.,  35.,  79.,  70.,  35.,  95.,  76.,  58.,  61.,
+           0.,  86.,  73.,  26.]], device='cuda:0')
+
+
+post_process,dets: torch.Size([1, 100, 40])
+# dets: torch.Size([1, 100, 40]),4bb + 1score(center point)+17*2 + 1cls
+
+
+    def add_coco_bbox(self, bbox, cat, conf=1, show_txt=True, img_id='default'):
+        bbox = np.array(bbox, dtype=np.int32)
+        # cat = (int(cat) + 1) % 80
+        cat = int(cat)
+        # print('cat', cat, self.names[cat])
+        c = self.colors[cat][0][0].tolist()
+        if self.theme == 'white':
+            c = (255 - np.array(c)).tolist()
+        txt = '{}{:.1f}'.format(self.names[cat], conf)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        cat_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
+        cv2.rectangle(
+            self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
+        if show_txt:
+            cv2.rectangle(self.imgs[img_id],
+                          (bbox[0], bbox[1] - cat_size[1] - 2),
+                          (bbox[0] + cat_size[0], bbox[1] - 2), c, -1)
+            cv2.putText(self.imgs[img_id], txt, (bbox[0], bbox[1] - 2),
+                        font, 0.5, (0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
+
+    def add_coco_hp(self, points, img_id='default'):
+        points = np.array(points, dtype=np.int32).reshape(self.num_joints, 2)
+        for j in range(self.num_joints):
+            cv2.circle(self.imgs[img_id],
+                       (points[j, 0], points[j, 1]), 3, self.colors_hp[j], -1)
+        for j, e in enumerate(self.edges):
+            if points[e].min() > 0:
+                cv2.line(self.imgs[img_id], (points[e[0], 0], points[e[0], 1]),
+                         (points[e[1], 0], points[e[1], 1]), self.ec[j], 2,
+                         lineType=cv2.LINE_AA)
+
+
+train cmd:
+python main.py --dataset rear_headlight_hp rear_headlight_multi_pose --not_rand_crop --no_color_aug --exp_id rear_headlight --arch res_18 --batch_size 1 --gpus 0
+inference:
+python demo.py --dataset rear_headlight_hp rear_headlight_multi_pose --demo ../data/rear_headlight/images/train/ --arch res_18 --load_model /home/mingxuzhu/Program_Design/CenterNet/exp/rear_headlight_multi_pose/rear_headlight/model_140.pth

@@ -111,6 +111,30 @@ def _topk_channel(scores, K=40):
     return topk_scores, topk_inds, topk_ys, topk_xs
 
 
+# 1*1*128*128
+# topk_scores: tensor([[[0.8842, 0.8121, 0.5700, 0.4927, 0.1592, 0.1415, 0.1136, 0.1067,
+#           0.0903, 0.0871, 0.0513, 0.0503, 0.0489, 0.0485, 0.0461, 0.0398,
+#           0.0338, 0.0307, 0.0298, 0.0287, 0.0200, 0.0199, 0.0188, 0.0136,
+#           0.0136, 0.0136, 0.0132, 0.0127, 0.0108, 0.0104, 0.0092, 0.0080,
+#           0.0076, 0.0065, 0.0065, 0.0047, 0.0045, 0.0044, 0.0044, 0.0042,
+#           0.0040, 0.0038, 0.0037, 0.0037, 0.0033, 0.0027, 0.0026, 0.0026,
+#           0.0025, 0.0024, 0.0023, 0.0023, 0.0023, 0.0023, 0.0022, 0.0022,
+#           0.0021, 0.0021, 0.0020, 0.0019, 0.0019, 0.0019, 0.0018, 0.0018,
+#           0.0016, 0.0016, 0.0016, 0.0016, 0.0015, 0.0015, 0.0015, 0.0015,
+#           0.0015, 0.0014, 0.0014, 0.0014, 0.0014, 0.0014, 0.0014, 0.0013,
+#           0.0013, 0.0013, 0.0013, 0.0013, 0.0013, 0.0012, 0.0012, 0.0012,
+#           0.0012, 0.0012, 0.0012, 0.0012, 0.0012, 0.0012, 0.0012, 0.0011,
+#           0.0011, 0.0011, 0.0011, 0.0011]]], device='cuda:0')
+# topk_inds: tensor([[[ 7341,  3951,  4091,  4679,  4085,  9238,  5630,  5246,  5755,  9484,
+#            7166,  6782,  7550,  7806,  8064,  8075,  8069,  6528,  9601,  6016,
+#            3945, 15492,  7428,  3205,  2684,  3456,  3311,  5893,  4741,  3054,
+#            7327,  4922,  4956,  4693,  3178,  4714,  2476,  2487,  2474,  6712,
+#            2225,  6985,  2483,  8483,  2491, 11293,  6477,  6351,  6071, 12410,
+#            5809,  6470,  4912,  7744,  5425,  4620,  3122, 11125,  5480, 11296,
+#           10673, 10993, 10792, 11170, 10679,  3600, 10172,  3724,  8640, 11231,
+#           10967, 11483,  3212,  3215, 11091,  9064,  3527, 12189, 10979, 16176,
+#            5289, 10983, 11211, 10219, 10986,  5673, 11369,  3027,  4131, 11087,
+#            9030,  3491,  9695,  2764,  9402,  3261,     0,  3670,  2505,  4890]]],
 def _topk(scores, K=40):
     batch, cat, height, width = scores.size()
 
@@ -126,6 +150,12 @@ def _topk(scores, K=40):
         topk_inds.view(batch, -1, 1), topk_ind).view(batch, K)
     topk_ys = _gather_feat(topk_ys.view(batch, -1, 1), topk_ind).view(batch, K)
     topk_xs = _gather_feat(topk_xs.view(batch, -1, 1), topk_ind).view(batch, K)
+
+    # topk_ys: torch.Size([1, 100])
+    # topk_xs: torch.Size([1, 100])
+    # topk_score: torch.Size([1, 100])
+    # topk_inds: torch.Size([1, 100])
+    # topk_clses: torch.Size([1, 100])
 
     return topk_score, topk_inds, topk_clses, topk_ys, topk_xs
 
@@ -505,19 +535,41 @@ def ctdet_decode(heat, wh, reg=None, cat_spec_wh=False, K=100):
     return detections
 
 
+# heat: torch.Size([1, 1, 128, 128])
+# wh: torch.Size([1, 2, 128, 128])
+# kps: torch.Size([1, 34, 128, 128])
+# reg: torch.Size([1, 2, 128, 128])
+# hm_hp: torch.Size([1, 17, 128, 128])
+# hp_offset: torch.Size([1, 2, 128, 128])
+
 def multi_pose_decode(
         heat, wh, kps, reg=None, hm_hp=None, hp_offset=None, K=100):
     batch, cat, height, width = heat.size()
     num_joints = kps.shape[1] // 2
     # heat = torch.sigmoid(heat)
     # perform nms on heatmaps
-    heat = _nms(heat)
+    heat = _nms(heat)  # torch.Size([1, 1, 128, 128]),mask matrix
+    # topk_ys: torch.Size([1, 100])
+    # topk_xs: torch.Size([1, 100])
+    # topk_score: torch.Size([1, 100])
+    # topk_inds: torch.Size([1, 100])
+    # topk_clses: torch.Size([1, 100])
+    # feat: torch.Size([1, 100, 1])
+    # feat: torch.Size([1, 100, 1])
+    # feat: torch.Size([1, 100, 1])
+    # feat: torch.Size([1, 100, 34])
+    # feat: torch.Size([1, 100, 2])
+    # feat: torch.Size([1, 100, 2])
+    # feat: torch.Size([1, 1700, 2]) kps value
     scores, inds, clses, ys, xs = _topk(heat, K=K)
-
     kps = _tranpose_and_gather_feat(kps, inds)
+    # kps: torch.Size([1, 100, 34])
+    # topk_ys: torch.Size([1, 100])
+    # topk_xs: torch.Size([1, 100])
     kps = kps.view(batch, K, num_joints * 2)
     kps[..., ::2] += xs.view(batch, K, 1).expand(batch, K, num_joints)
     kps[..., 1::2] += ys.view(batch, K, 1).expand(batch, K, num_joints)
+    # kps: torch.Size([1, 100, 34])
     if reg is not None:
         reg = _tranpose_and_gather_feat(reg, inds)
         reg = reg.view(batch, K, 2)
@@ -527,21 +579,28 @@ def multi_pose_decode(
         xs = xs.view(batch, K, 1) + 0.5
         ys = ys.view(batch, K, 1) + 0.5
     wh = _tranpose_and_gather_feat(wh, inds)
-    wh = wh.view(batch, K, 2)
-    clses = clses.view(batch, K, 1).float()
-    scores = scores.view(batch, K, 1)
+    wh = wh.view(batch, K, 2)  # 1,100,2
+    clses = clses.view(batch, K, 1).float()  # 1,100,1
+    scores = scores.view(batch, K, 1)  # 1,100,1
 
     bboxes = torch.cat([xs - wh[..., 0:1] / 2,
                         ys - wh[..., 1:2] / 2,
                         xs + wh[..., 0:1] / 2,
                         ys + wh[..., 1:2] / 2], dim=2)
+    # bboxes: torch.Size([1, 100, 4])
+    # hm_hp: torch.Size([1, 17, 128, 128])
+    # kps: torch.Size([1, 100, 34])
     if hm_hp is not None:
         hm_hp = _nms(hm_hp)
         thresh = 0.1
-        kps = kps.view(batch, K, num_joints, 2).permute(
+        kps = kps.view(batch, K, num_joints, 2).permute(  # 1,100,17,2->1,17,100,2
             0, 2, 1, 3).contiguous()  # b x J x K x 2
-        reg_kps = kps.unsqueeze(3).expand(batch, num_joints, K, K, 2)
+        reg_kps = kps.unsqueeze(3).expand(batch, num_joints, K, K, 2)  # 1,17,100,1,2->1,17,100,100,2
         hm_score, hm_inds, hm_ys, hm_xs = _topk_channel(hm_hp, K=K)  # b x J x K
+        # hm_score: torch.Size([1, 17, 100])
+        # hm_inds: torch.Size([1, 17, 100])
+        # hm_ys: torch.Size([1, 17, 100])
+        # hm_xs: torch.Size([1, 17, 100])
         if hp_offset is not None:
             hp_offset = _tranpose_and_gather_feat(
                 hp_offset, hm_inds.view(batch, -1))
@@ -549,10 +608,10 @@ def multi_pose_decode(
             hm_xs = hm_xs + hp_offset[:, :, :, 0]
             hm_ys = hm_ys + hp_offset[:, :, :, 1]
         else:
-            hm_xs = hm_xs + 0.5
+            hm_xs = hm_xs + 0.5  # 4 discard 5 input
             hm_ys = hm_ys + 0.5
 
-        mask = (hm_score > thresh).float()
+        mask = (hm_score > thresh).float()  # pose thresh=0.1
         hm_score = (1 - mask) * -1 + mask * hm_score
         hm_ys = (1 - mask) * (-10000) + mask * hm_ys
         hm_xs = (1 - mask) * (-10000) + mask * hm_xs
@@ -578,5 +637,5 @@ def multi_pose_decode(
         kps = kps.permute(0, 2, 1, 3).contiguous().view(
             batch, K, num_joints * 2)
     detections = torch.cat([bboxes, scores, kps, clses], dim=2)
-
+    # dets: torch.Size([1, 100, 40]),4bb + 1score(center point)+17*2 + 1cls
     return detections

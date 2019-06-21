@@ -88,14 +88,14 @@ class MultiPoseDataset(data.Dataset):
         dense_kps_mask = np.zeros((num_joints, output_res, output_res),
                                   dtype=np.float32)
         wh = np.zeros((self.max_objs, 2), dtype=np.float32)
-        kps = np.zeros((self.max_objs, num_joints * 2), dtype=np.float32)  # 36,17*2 center offset to hp
-        reg = np.zeros((self.max_objs, 2), dtype=np.float32)  # 36*2 center error
-        ind = np.zeros((self.max_objs), dtype=np.int64)  # 36
-        reg_mask = np.zeros((self.max_objs), dtype=np.uint8)  # 36  mask center error
-        kps_mask = np.zeros((self.max_objs, self.num_joints * 2), dtype=np.uint8)  # 36,17*2
-        hp_offset = np.zeros((self.max_objs * num_joints, 2), dtype=np.float32)  # 36*17,2
-        hp_ind = np.zeros((self.max_objs * num_joints), dtype=np.int64)  # 36*17
-        hp_mask = np.zeros((self.max_objs * num_joints), dtype=np.int64)  # 36*17
+        kps = np.zeros((self.max_objs, num_joints * 2), dtype=np.float32)  # 32,17*2 center offset to hp
+        reg = np.zeros((self.max_objs, 2), dtype=np.float32)  # 32*2 center error
+        ind = np.zeros((self.max_objs), dtype=np.int64)  # 32
+        reg_mask = np.zeros((self.max_objs), dtype=np.uint8)  # 32  mask center error
+        kps_mask = np.zeros((self.max_objs, self.num_joints * 2), dtype=np.uint8)  # 32,17*2
+        hp_offset = np.zeros((self.max_objs * num_joints, 2), dtype=np.float32)  # 32*17,2
+        hp_ind = np.zeros((self.max_objs * num_joints), dtype=np.int64)  # 32*17
+        hp_mask = np.zeros((self.max_objs * num_joints), dtype=np.int64)  # 32*17
 
         draw_gaussian = draw_msra_gaussian if self.opt.mse_loss else \
             draw_umich_gaussian

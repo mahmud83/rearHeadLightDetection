@@ -19,7 +19,7 @@ def flip(img):
 
 
 def transform_preds(coords, center, scale, output_size):
-    target_coords = np.zeros(coords.shape)
+    target_coords = np.zeros(coords.shape)  # 200*2
     trans = get_affine_transform(center, scale, 0, output_size, inv=1)
     for p in range(coords.shape[0]):
         target_coords[p, 0:2] = affine_transform(coords[p, 0:2], trans)

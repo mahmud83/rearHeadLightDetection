@@ -38,7 +38,7 @@ class BaseDetector(object):
         height, width = image.shape[0:2]
         new_height = int(height * scale)
         new_width = int(width * scale)
-        if self.opt.fix_res:
+        if self.opt.fix_res:  # 512,512
             inp_height, inp_width = self.opt.input_h, self.opt.input_w
             c = np.array([new_width / 2., new_height / 2.], dtype=np.float32)
             s = max(height, width) * 1.0
@@ -114,6 +114,7 @@ class BaseDetector(object):
             pre_time += pre_process_time - scale_start_time
 
             output, dets, forward_time = self.process(images, return_time=True)
+            # dets:1*100*40
 
             torch.cuda.synchronize()
             net_time += forward_time - pre_process_time
@@ -129,7 +130,7 @@ class BaseDetector(object):
             post_time += post_process_time - decode_time
 
             detections.append(dets)
-
+        # [torch.Size([1, 100, 40])]
         results = self.merge_outputs(detections)
         torch.cuda.synchronize()
         end_time = time.time()
@@ -137,6 +138,8 @@ class BaseDetector(object):
         tot_time += end_time - start_time
 
         if self.opt.debug >= 1:
+            # print("result:",np.array(results[1]).shape) #result[1]: (100, 39)
+            # res:{1:100*39}
             self.show_results(debugger, image, results)
 
         return {'results': results, 'tot': tot_time, 'load': load_time,

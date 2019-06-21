@@ -12,15 +12,15 @@ from external.nms import soft_nms_39
 from models.decode import multi_pose_decode
 from models.utils import flip_tensor, flip_lr_off, flip_lr
 from utils.image import get_affine_transform
-from utils.post_process import multi_pose_post_process
+from utils.post_process import rearHeadLight_post_process
 from utils.debugger import Debugger
 
 from .base_detector import BaseDetector
 
 
-class MultiPoseDetector(BaseDetector):
+class RearHeadLightDetector(BaseDetector):
     def __init__(self, opt):
-        super(MultiPoseDetector, self).__init__(opt)
+        super(RearHeadLightDetector, self).__init__(opt)
         self.flip_idx = opt.flip_idx
 
     def process(self, images, return_time=False):
@@ -58,12 +58,10 @@ class MultiPoseDetector(BaseDetector):
 
     def post_process(self, dets, meta, scale=1):  # 1*100*40
         dets = dets.detach().cpu().numpy().reshape(1, -1, dets.shape[2])
-        # dets:dets: (1,100,40)
-        dets = multi_pose_post_process(  # [{1:1*100*39}]
-            dets.copy(), [meta['c']], [meta['s']],
-            meta['out_height'], meta['out_width'])
+        dets = rearHeadLight_post_process(dets.copy(), [meta['c']], [meta['s']],
+                                          meta['out_height'], meta['out_width'])
         for j in range(1, self.num_classes + 1):
-            dets[0][j] = np.array(dets[0][j], dtype=np.float32).reshape(-1, 39)  # 100*39
+            dets[0][j] = np.array(dets[0][j], dtype=np.float32).reshape(-1, 7)  # 1
             # import pdb; pdb.set_trace()
             dets[0][j][:, :4] /= scale  #
             dets[0][j][:, 5:] /= scale  #
@@ -96,9 +94,9 @@ class MultiPoseDetector(BaseDetector):
             debugger.add_blend_img(img, pred, 'pred_hmhp')
 
     def show_results(self, debugger, image, results):
-        debugger.add_img(image, img_id='multi_pose')
+        debugger.add_img(image, img_id='rearHeadLight')
         for bbox in results[1]:
             if bbox[4] > self.opt.vis_thresh:  # So when bbox > 0.3 and key points > 0.1,can show in picture
-                debugger.add_coco_bbox(bbox[:4], 0, bbox[4], img_id='multi_pose')
-                debugger.add_coco_hp(bbox[5:39], img_id='multi_pose')
+                debugger.add_rearHeadLight_bbox(bbox[:4], 0, bbox[4], img_id='rearHeadLight')
+                debugger.add_readHeadLight_hp(bbox[5::], img_id='rearHeadLight')
         debugger.show_all_imgs(pause=self.pause)

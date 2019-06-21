@@ -42,6 +42,11 @@ class Debugger(object):
                               (255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
                               (255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
                               (255, 0, 0), (0, 0, 255)]
+        elif dataset == 'rear_headlight_hp':
+            self.names = ['vehicle(v)']
+            self.num_class = 1
+            self.num_joints = 1
+            self.colors_hp = [(0, 255, 0)]
         elif num_classes == 80 or dataset == 'coco':
             self.names = coco_class_name
         elif num_classes == 20 or dataset == 'pascal':
@@ -198,6 +203,37 @@ class Debugger(object):
                 cv2.line(self.imgs[img_id], (points[e[0], 0], points[e[0], 1]),
                          (points[e[1], 0], points[e[1], 1]), self.ec[j], 2,
                          lineType=cv2.LINE_AA)
+
+    def add_rearHeadLight_bbox(self, bbox, cat, conf=1, show_txt=True, img_id='default'):
+        bbox = np.array(bbox, dtype=np.int32)
+        # cat = (int(cat) + 1) % 80
+        cat = int(cat)
+        # print('cat', cat, self.names[cat])
+        c = self.colors[cat][0][0].tolist()
+        if self.theme == 'white':
+            c = (255 - np.array(c)).tolist()
+        txt = '{}{:.1f}'.format(self.names[cat], conf)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        cat_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
+        cv2.rectangle(
+            self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
+        if show_txt:
+            cv2.rectangle(self.imgs[img_id],
+                          (bbox[0], bbox[1] - cat_size[1] - 2),
+                          (bbox[0] + cat_size[0], bbox[1] - 2), c, -1)
+            cv2.putText(self.imgs[img_id], txt, (bbox[0], bbox[1] - 2),
+                        font, 0.5, (0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
+
+    def add_readHeadLight_hp(self, points, img_id='default'):
+        points = np.array(points, dtype=np.int32).reshape(self.num_joints, 2)
+        for j in range(self.num_joints):
+            cv2.circle(self.imgs[img_id],
+                       (points[j, 0], points[j, 1]), 3, self.colors_hp[j], -1)
+        # for j, e in enumerate(self.edges):
+        #    if points[e].min() > 0:
+        #        cv2.line(self.imgs[img_id], (points[e[0], 0], points[e[0], 1]),
+        #                 (points[e[1], 0], points[e[1], 1]), self.ec[j], 2,
+        #                 lineType=cv2.LINE_AA)
 
     def add_points(self, points, img_id='default'):
         num_classes = len(points)

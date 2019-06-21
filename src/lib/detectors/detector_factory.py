@@ -6,10 +6,12 @@ from .exdet import ExdetDetector
 from .ddd import DddDetector
 from .ctdet import CtdetDetector
 from .multi_pose import MultiPoseDetector
+from .rearHeadLightDetector import RearHeadLightDetector
 
 detector_factory = {
     'exdet': ExdetDetector,
     'ddd': DddDetector,
     'ctdet': CtdetDetector,
     'multi_pose': MultiPoseDetector,
+    'rear_headlight_multi_pose': RearHeadLightDetector
 }
