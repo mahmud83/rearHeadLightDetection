@@ -10,6 +10,7 @@ from models.decode import multi_pose_decode
 from models.utils import _sigmoid, flip_tensor, flip_lr_off, flip_lr
 from utils.debugger import Debugger
 from utils.post_process import multi_pose_post_process
+from utils.post_process import rearHeadLight_post_process
 from utils.oracle_utils import gen_oracle_map
 from .base_trainer import BaseTrainer
 
@@ -155,8 +156,16 @@ class MultiPoseTrainer(BaseTrainer):
             reg=reg, hm_hp=hm_hp, hp_offset=hp_offset, K=self.opt.K)
         dets = dets.detach().cpu().numpy().reshape(1, -1, dets.shape[2])
 
-        dets_out = multi_pose_post_process(
+        # dets_out = multi_pose_post_process(
+        #     dets.copy(), batch['meta']['c'].cpu().numpy(),
+        #     batch['meta']['s'].cpu().numpy(),
+        #     output['hm'].shape[2], output['hm'].shape[3])
+        # results[batch['meta']['img_id'].cpu().numpy()[0]] = dets_out[0]
+
+        dets_out = rearHeadLight_post_process(
             dets.copy(), batch['meta']['c'].cpu().numpy(),
             batch['meta']['s'].cpu().numpy(),
             output['hm'].shape[2], output['hm'].shape[3])
         results[batch['meta']['img_id'].cpu().numpy()[0]] = dets_out[0]
+
+

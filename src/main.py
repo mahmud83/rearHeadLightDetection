@@ -39,18 +39,18 @@ def main(opt):
     trainer.set_device(opt.gpus, opt.chunk_sizes, opt.device)
 
     print('Setting up data...')
-    # val_loader = torch.utils.data.DataLoader(
-    #    Dataset(opt, 'val'),
-    #    batch_size=1,
-    #    shuffle=False,
-    #    num_workers=1,
-    #    pin_memory=True
-    # )
+    val_loader = torch.utils.data.DataLoader(
+        Dataset(opt, 'train'),
+        batch_size=1,
+        shuffle=False,
+        num_workers=1,
+        pin_memory=True
+    )
 
-    # if opt.test:
-    #    _, preds = trainer.val(0, val_loader)
-    #    val_loader.dataset.run_eval(preds, opt.save_dir)
-    #    return
+    if opt.test:
+        _, preds = trainer.val(0, val_loader)
+        val_loader.dataset.run_eval(preds, opt.save_dir)
+        return
 
     train_loader = torch.utils.data.DataLoader(
         Dataset(opt, 'train'),

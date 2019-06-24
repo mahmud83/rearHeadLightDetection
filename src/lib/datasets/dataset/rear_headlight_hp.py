@@ -3,6 +3,8 @@ from __future__ import division
 from __future__ import print_function
 
 from pycocotools.cocoeval import COCOeval
+import pycocotools.coco as coco
+import cv2
 import numpy as np
 import json
 import os
@@ -57,23 +59,77 @@ class RearHeadLightHP(data.Dataset):
 
         print('==> initializing rear headlight {} data.'.format(split))
         self.anno = json.load(open(self.annot_path))
-        # self.coco = coco.COCO(self.annot_path)
-        # image_ids = self.coco.getImgIds()
-        self.num_samples = len(self.anno)
+        self._convert_eval_anno_format()
 
-        # if split == 'train':
-        #    self.images = []
-        #    for img_id in image_ids:
-        #        idxs = self.coco.getAnnIds(imgIds=[img_id])
-        #        if len(idxs) > 0:
-        #            self.images.append(img_id)
-        # else:
-        #    self.images = image_ids
+        self.coco = coco.COCO(os.path.join(self.data_dir, 'annotations', 'coco_annotations.json'))
+        image_ids = self.coco.getImgIds()
+        self.num_samples = len(self.anno)
+        if split == 'train':
+            self.images = []
+            for img_id in image_ids:
+                idxs = self.coco.getAnnIds(imgIds=[img_id])
+                if len(idxs) > 0:
+                    self.images.append(img_id)
+        else:
+            self.images = image_ids
 
         print('Loaded {} {} samples'.format(split, self.num_samples))
 
     def _to_float(self, x):
         return float("{:.2f}".format(x))
+
+    def _convert_eval_anno_format(self):
+
+        res = self.anno
+        new_anno = {}
+        categories = [{'supercategory': 'vehicle(v)', 'id': 1, 'name': 'vehicle(v)',
+                       'keypoints': ['right_headlight'], 'skeleton': []}]
+        new_anno = {'categories': categories}
+        num_images = len(res)
+        images = []
+        for i in range(num_images):
+            img_info = {}
+            file_name = res[i]["filename"].split("//")[-1]
+            img = cv2.imread(os.path.join(self.img_dir, file_name))
+            height, width = img.shape[0], img.shape[1]
+            img_info['file_name'] = file_name
+            img_info['height'] = height
+            img_info['width'] = width
+            img_info['id'] = i  # 0..19
+            images.append(img_info)
+        new_anno['images'] = images
+        annotations = []
+        anno_id = 0
+        for image_id, anno in enumerate(res):
+            for _, obj_info in enumerate(anno['annotations']):
+                new_obj_info = {}
+                bbox = [obj_info['x'], obj_info['y'], obj_info['width'], obj_info['height']]
+                keypoints = []
+                new_obj_info['segmentation'] = []
+                new_obj_info['num_keypoints'] = 1
+                new_obj_info['area'] = obj_info['width'] * obj_info['height']
+                new_obj_info['iscrowd'] = 0
+
+                if obj_info['headlightVisible'] == -1:
+                    keypoints = [0, 0, 0]
+                elif obj_info['headlightVisible'] == 0:
+                    keypoints = [obj_info['headlight(h)']['x'], obj_info['headlight(h)']['y'], 1]
+                elif obj_info['headlightVisible'] == 1:
+                    keypoints = [obj_info['headlight(h)']['x'], obj_info['headlight(h)']['y'], 2]
+                else:
+                    continue
+                new_obj_info['keypoints'] = keypoints
+                new_obj_info['image_id'] = image_id
+                new_obj_info['id'] = anno_id
+                new_obj_info['bbox'] = bbox
+                new_obj_info['category_id'] = 1
+                annotations.append(new_obj_info)
+                anno_id += 1
+        new_anno['annotations'] = annotations
+        anno_dump = json.dumps(new_anno)
+        with open(os.path.join(self.data_dir, "annotations", "coco_annotations.json"), "w") as fp:
+            fp.write(anno_dump)
+        return new_anno
 
     def convert_eval_format(self, all_bboxes):
         # import pdb; pdb.set_trace()
@@ -88,8 +144,8 @@ class RearHeadLightHP(data.Dataset):
                     score = dets[4]
                     bbox_out = list(map(self._to_float, bbox))
                     keypoints = np.concatenate([
-                        np.array(dets[5:39], dtype=np.float32).reshape(-1, 2),
-                        np.ones((17, 1), dtype=np.float32)], axis=1).reshape(51).tolist()
+                        np.array(dets[5:7], dtype=np.float32).reshape(-1, 2),
+                        np.ones((1, 1), dtype=np.float32)], axis=1).reshape(3).tolist()
                     keypoints = list(map(self._to_float, keypoints))
 
                     detection = {
@@ -115,11 +171,11 @@ class RearHeadLightHP(data.Dataset):
         # json.dump(detections, open(result_json, "w"))
         self.save_results(results, save_dir)
         coco_dets = self.coco.loadRes('{}/results.json'.format(save_dir))
-        coco_eval = COCOeval(self.coco, coco_dets, "keypoints")
+        coco_eval = COCOeval(self.coco, coco_dets, "bbox")
         coco_eval.evaluate()
         coco_eval.accumulate()
         coco_eval.summarize()
-        coco_eval = COCOeval(self.coco, coco_dets, "bbox")
+        coco_eval = COCOeval(self.coco, coco_dets, "keypoints")
         coco_eval.evaluate()
         coco_eval.accumulate()
         coco_eval.summarize()
