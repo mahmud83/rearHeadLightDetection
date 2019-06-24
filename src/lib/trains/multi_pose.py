@@ -79,9 +79,9 @@ class MultiPoseLoss(torch.nn.Module):
                opt.off_weight * off_loss + opt.hp_weight * hp_loss + \
                opt.hm_hp_weight * hm_hp_loss + opt.off_weight * hp_offset_loss
 
-        loss_stats = {'loss': loss, 'hm_loss': hm_loss, 'hp_loss': hp_loss,
-                      'hm_hp_loss': hm_hp_loss, 'hp_offset_loss': hp_offset_loss,
-                      'wh_loss': wh_loss, 'off_loss': off_loss}
+        loss_stats = {'loss': loss, 'hm_loss': opt.hm_weight * hm_loss, 'hp_loss': opt.hp_weight * hp_loss,
+                      'hm_hp_loss': opt.hm_hp_weight * hm_hp_loss, 'hp_offset_loss': opt.off_weight * hp_offset_loss,
+                      'wh_loss': opt.wh_weight * wh_loss, 'off_loss': opt.off_weight * off_loss}
         return loss, loss_stats
 
 

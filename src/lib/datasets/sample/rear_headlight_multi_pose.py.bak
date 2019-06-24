@@ -29,7 +29,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
                         dtype=np.float32)
         return bbox
 
-    def _get_border(self, border, size):  # 128,w
+    def _get_border(self, border, size):
         i = 1
         while size - border // i <= border // i:
             i *= 2
@@ -75,9 +75,9 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
                 c[0] = width - c[0] - 1
 
         trans_input = get_affine_transform(
-            c, s, rot, [self.opt.input_w, self.opt.input_h])
+            c, s, rot, [self.opt.input_res, self.opt.input_res])
         inp = cv2.warpAffine(img, trans_input,
-                             (self.opt.input_w, self.opt.input_h),
+                             (self.opt.input_res, self.opt.input_res),
                              flags=cv2.INTER_LINEAR)
         inp = (inp.astype(np.float32) / 255.)
         if self.split == 'train' and not self.opt.no_color_aug:
@@ -85,16 +85,16 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         inp = (inp - self.mean) / self.std
         inp = inp.transpose(2, 0, 1)  # H,W,C -> C,H,W
 
-        # output_res = self.opt.output_res
+        output_res = self.opt.output_res
         num_joints = self.num_joints
-        trans_output_rot = get_affine_transform(c, s, rot, [self.opt.output_w, self.opt.output_h])
-        trans_output = get_affine_transform(c, s, 0, [self.opt.output_w, self.opt.output_h])
+        trans_output_rot = get_affine_transform(c, s, rot, [output_res, output_res])
+        trans_output = get_affine_transform(c, s, 0, [output_res, output_res])
 
-        hm = np.zeros((self.num_classes, self.opt.output_h, self.opt.output_w), dtype=np.float32)  # 1*128*128
-        hm_hp = np.zeros((num_joints, self.opt.output_h, self.opt.output_w), dtype=np.float32)  # 17*128*128
-        dense_kps = np.zeros((num_joints, 2, self.opt.output_h, self.opt.output_w),
+        hm = np.zeros((self.num_classes, output_res, output_res), dtype=np.float32)  # 1*128*128
+        hm_hp = np.zeros((num_joints, output_res, output_res), dtype=np.float32)  # 17*128*128
+        dense_kps = np.zeros((num_joints, 2, output_res, output_res),
                              dtype=np.float32)
-        dense_kps_mask = np.zeros((num_joints, self.opt.output_h, self.opt.output_w),
+        dense_kps_mask = np.zeros((num_joints, output_res, output_res),
                                   dtype=np.float32)
         wh = np.zeros((self.max_objs, 2), dtype=np.float32)
         kps = np.zeros((self.max_objs, num_joints * 2), dtype=np.float32)  # 36,17*2 center offset to hp
@@ -141,8 +141,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
                     pts[e[0]], pts[e[1]] = pts[e[1]].copy(), pts[e[0]].copy()
             bbox[:2] = affine_transform(bbox[:2], trans_output)
             bbox[2:] = affine_transform(bbox[2:], trans_output)
-            bbox[[0, 2]] = np.clip(bbox[[0, 2]], 0, self.opt.output_w - 1)
-            bbox[[1, 3]] = np.clip(bbox[[1, 3]], 0, self.opt.output_h - 1)
+            bbox = np.clip(bbox, 0, output_res - 1)
             h, w = bbox[3] - bbox[1], bbox[2] - bbox[0]
             if (h > 0 and w > 0) or (rot != 0):
                 radius = gaussian_radius((math.ceil(h), math.ceil(w)))
@@ -151,7 +150,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
                     [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2], dtype=np.float32)  # w,h
                 ct_int = ct.astype(np.int32)
                 wh[k] = 1. * w, 1. * h
-                ind[k] = ct_int[1] * self.opt.output_w + ct_int[0]  # flatten feature map index
+                ind[k] = ct_int[1] * output_res + ct_int[0]  # flatten feature map index
                 reg[k] = ct - ct_int
                 reg_mask[k] = 1
 
@@ -166,13 +165,13 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
                 for j in range(num_joints):
                     if pts[j, 2] > 0:  # valid key point gt
                         pts[j, :2] = affine_transform(pts[j, :2], trans_output_rot)
-                        if pts[j, 0] >= 0 and pts[j, 0] < self.opt.output_w and \
-                                pts[j, 1] >= 0 and pts[j, 1] < self.opt.output_h:
+                        if pts[j, 0] >= 0 and pts[j, 0] < output_res and \
+                                pts[j, 1] >= 0 and pts[j, 1] < output_res:
                             kps[k, j * 2: j * 2 + 2] = pts[j, :2] - ct_int
                             kps_mask[k, j * 2: j * 2 + 2] = 1
                             pt_int = pts[j, :2].astype(np.int32)
                             hp_offset[k * num_joints + j] = pts[j, :2] - pt_int
-                            hp_ind[k * num_joints + j] = pt_int[1] * self.opt.output_w + pt_int[0]
+                            hp_ind[k * num_joints + j] = pt_int[1] * output_res + pt_int[0]
                             hp_mask[k * num_joints + j] = 1
                             if self.opt.dense_hp:
                                 # must be before draw center hm gaussian
@@ -191,12 +190,12 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         ret = {'input': inp, 'hm': hm, 'reg_mask': reg_mask, 'ind': ind, 'wh': wh,
                'hps': kps, 'hps_mask': kps_mask}
         if self.opt.dense_hp:
-            dense_kps = dense_kps.reshape(num_joints * 2, self.opt.output_h, self.opt.output_w)
+            dense_kps = dense_kps.reshape(num_joints * 2, output_res, output_res)
             dense_kps_mask = dense_kps_mask.reshape(
-                num_joints, 1, self.opt.output_h, self.opt.output_w)
+                num_joints, 1, output_res, output_res)
             dense_kps_mask = np.concatenate([dense_kps_mask, dense_kps_mask], axis=1)
             dense_kps_mask = dense_kps_mask.reshape(
-                num_joints * 2, self.opt.output_h, self.opt.output_w)
+                num_joints * 2, output_res, output_res)
             ret.update({'dense_hps': dense_kps, 'dense_hps_mask': dense_kps_mask})
             del ret['hps'], ret['hps_mask']
         if self.opt.reg_offset:

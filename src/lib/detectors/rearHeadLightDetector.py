@@ -76,7 +76,6 @@ class RearHeadLightDetector(BaseDetector):
         if self.opt.nms or len(self.opt.test_scales) > 1:
             soft_nms_39(results[1], Nt=0.5, method=2)
         results[1] = results[1].tolist()
-        # {1:100*39}
         return results
 
     def debug(self, debugger, images, dets, output, scale=1):
@@ -84,8 +83,7 @@ class RearHeadLightDetector(BaseDetector):
         dets[:, :, :4] *= self.opt.down_ratio
         dets[:, :, 5:39] *= self.opt.down_ratio
         img = images[0].detach().cpu().numpy().transpose(1, 2, 0)
-        img = np.clip(((
-                               img * self.std + self.mean) * 255.), 0, 255).astype(np.uint8)
+        img = np.clip(((img * self.std + self.mean) * 255.), 0, 255).astype(np.uint8)
         pred = debugger.gen_colormap(output['hm'][0].detach().cpu().numpy())
         debugger.add_blend_img(img, pred, 'pred_hm')
         if self.opt.hm_hp:
@@ -95,6 +93,7 @@ class RearHeadLightDetector(BaseDetector):
 
     def show_results(self, debugger, image, results):
         debugger.add_img(image, img_id='rearHeadLight')
+        # print(np.array(results[1]).shape)#100*7 nms index 7 is out of bounds for axis 1 with size 7
         for bbox in results[1]:
             if bbox[4] > self.opt.vis_thresh:  # So when bbox > 0.3 and key points > 0.1,can show in picture
                 debugger.add_rearHeadLight_bbox(bbox[:4], 0, bbox[4], img_id='rearHeadLight')

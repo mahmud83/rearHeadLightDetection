@@ -368,7 +368,7 @@ class opts(object):
                              [11, 12], [13, 14], [15, 16]]},
 
             'rear_headlight_multi_pose': {
-                'default_resolution': [512, 512], 'num_classes': 1,
+                'default_resolution': [448, 832], 'num_classes': 1,  # H,W
                 'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],  # should accord to rear dataSet cal
                 'dataset': 'rear_headlight_hp', 'num_joints': 1,
                 'flip_idx': []},

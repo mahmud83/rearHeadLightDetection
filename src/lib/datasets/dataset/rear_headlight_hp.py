@@ -17,7 +17,7 @@ from opts import opts
 class RearHeadLightHP(data.Dataset):
     num_classes = 1
     num_joints = 1
-    default_resolution = [512, 512]
+    default_resolution = [448, 832]
     mean = np.array([0.40789654, 0.44719302, 0.47026115],  # should accord to rear dataSet cal
                     dtype=np.float32).reshape(1, 1, 3)
     std = np.array([0.28863828, 0.27408164, 0.27809835],  # should accord to rear dataSet cal
