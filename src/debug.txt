@@ -99,6 +99,12 @@ post_process,dets: torch.Size([1, 100, 40])
                          lineType=cv2.LINE_AA)
 
 
+
+support coco kpt eval:
+cocoEval        # self.kpt_oks_sigmas = np.array([.26, .25, .25, .35, .35, .79, .79, .72, .72, .62,.62, 1.07, 1.07, .87, .87, .89, .89])/10.0
+                  self.kpt_oks_sigmas = np.array([.26]) / 10.0
+
+
 train cmd:
 python main.py --dataset rear_headlight_hp rear_headlight_multi_pose --not_rand_crop --no_color_aug --exp_id rear_headlight_448_832 --arch res_18 --batch_size 2 --gpus 0
 inference:
@@ -106,7 +112,6 @@ python demo.py --dataset rear_headlight_hp rear_headlight_multi_pose --demo ../d
 python demo.py --dataset rear_headlight_hp rear_headlight_multi_pose --demo ../data/rear_headlight/images/train/ --arch res_18 --load_model /home/mingxuzhu/Program_Design/CenterNet/exp/rear_headlight_multi_pose/rear_headlight_448_832/model_140.pth
 test cmd:
 python main.py --dataset rear_headlight_hp rear_headlight_multi_pose --not_rand_crop --no_color_aug --exp_id rear_headlight_448_832 --arch res_18 --batch_size 2 --gpus 0 --load_model /home/mingxuzhu/Program_Design/CenterNet/exp/rear_headlight_multi_pose/rear_headlight_448_832/model_140.pth --test
-
 
 
 loss 8.9113 |hm_loss 1.6922 |hp_loss 3.1365 |hm_hp_loss 1.7946 |hp_offset_loss 0.2524 |wh_loss 17.9760 |off_loss 0.2380 |Data 0.205s(0.210s) |Net 0.330s
