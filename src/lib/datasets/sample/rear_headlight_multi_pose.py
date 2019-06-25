@@ -37,7 +37,6 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
 
     def __getitem__(self, index):
         img_id = self.images[index]
-        print("img_id:", img_id)
         # file_name = self.coco.loadImgs(ids=[img_id])[0]['file_name']
         # img_path = os.path.join(self.img_dir, file_name)
         # ann_ids = self.coco.getAnnIds(imgIds=[img_id])
@@ -207,8 +206,8 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         if self.opt.reg_hp_offset:
             ret.update({'hp_offset': hp_offset, 'hp_ind': hp_ind, 'hp_mask': hp_mask})
 
-        if True:
-        #if self.opt.debug > 0 or not self.split == 'train':
+        #if True:
+        if self.opt.debug > 0 or not self.split == 'train':
             gt_det = np.array(gt_det, dtype=np.float32) if len(gt_det) > 0 else \
                 np.zeros((1, 40), dtype=np.float32)
             meta = {'c': c, 's': s, 'gt_det': gt_det, 'img_id': img_id}
