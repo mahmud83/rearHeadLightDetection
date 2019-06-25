@@ -70,5 +70,3 @@ for image_id, anno in enumerate(res):
         anno_id += 1
 new_anno['annotations'] = annotations
 
-
-def

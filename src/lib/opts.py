@@ -85,7 +85,7 @@ class opts(object):
                                  help='learning rate for batch size 32.')
         self.parser.add_argument('--lr_step', type=str, default='90,120',
                                  help='drop learning rate by 10.')
-        self.parser.add_argument('--num_epochs', type=int, default=140,
+        self.parser.add_argument('--num_epochs', type=int, default=300,
                                  help='total training epochs.')
         self.parser.add_argument('--batch_size', type=int, default=32,
                                  help='batch size')
@@ -121,25 +121,17 @@ class opts(object):
         self.parser.add_argument('--not_rand_crop', action='store_true',
                                  help='not use the random crop data augmentation'
                                       'from CornerNet.')
-        # self.parser.add_argument('--shift', type=float, default=0.1,
-        #                          help='when not using random crop'
-        #                               'apply shift augmentation.')
-        # self.parser.add_argument('--scale', type=float, default=0.4,
-        #                          help='when not using random crop'
-        #                               'apply scale augmentation.')
-        self.parser.add_argument('--shift', type=float, default=0.1,
+        self.parser.add_argument('--shift', type=float, default=0.0,
                                  help='when not using random crop'
                                       'apply shift augmentation.')
-        self.parser.add_argument('--scale', type=float, default=0.4,
+        self.parser.add_argument('--scale', type=float, default=0.0,  # shift:0.1,scale:0.4
                                  help='when not using random crop'
                                       'apply scale augmentation.')
         self.parser.add_argument('--rotate', type=float, default=0,
                                  help='when not using random crop'
                                       'apply rotation augmentation.')
-        self.parser.add_argument('--flip', type=float, default=0.5,
+        self.parser.add_argument('--flip', type=float, default=0.0,
                                  help='probability of applying flip augmentation.')
-        # self.parser.add_argument('--flip', type=float, default=0.0,
-        #                         help='probability of applying flip augmentation.')
         self.parser.add_argument('--no_color_aug', action='store_true',
                                  help='not use the color augmenation '
                                       'from CornerNet')

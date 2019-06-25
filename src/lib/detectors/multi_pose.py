@@ -57,8 +57,7 @@ class MultiPoseDetector(BaseDetector):
             return output, dets
 
     def post_process(self, dets, meta, scale=1):  # 1*100*40
-        dets = dets.detach().cpu().numpy().reshape(1, -1, dets.shape[2])
-        # dets:dets: (1,100,40)
+        dets = dets.detach().cpu().numpy().reshape(1, -1, dets.shape[2])  # dets:dets: (1,100,40)
         dets = multi_pose_post_process(  # [{1:1*100*39}]
             dets.copy(), [meta['c']], [meta['s']],
             meta['out_height'], meta['out_width'])

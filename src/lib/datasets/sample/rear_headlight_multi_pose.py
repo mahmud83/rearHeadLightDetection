@@ -48,7 +48,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         img = cv2.imread(img_path)
 
         height, width = img.shape[0], img.shape[1]
-        c = np.array([img.shape[1] / 2., img.shape[0] / 2.], dtype=np.float32)  # w/2,h/2
+        c = np.array([img.shape[1] / 2., img.shape[0] / 2.], dtype=np.float32)  # center w/2,h/2
         s = max(img.shape[0], img.shape[1]) * 1.0
         rot = 0
         flipped = False
@@ -206,7 +206,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         if self.opt.reg_hp_offset:
             ret.update({'hp_offset': hp_offset, 'hp_ind': hp_ind, 'hp_mask': hp_mask})
 
-        #if True:
+        # if True:
         if self.opt.debug > 0 or not self.split == 'train':
             gt_det = np.array(gt_det, dtype=np.float32) if len(gt_det) > 0 else \
                 np.zeros((1, 40), dtype=np.float32)
