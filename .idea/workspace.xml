@@ -3,11 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="eb2f13c8-97a0-4e9f-b23d-cb57dca2ac0a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/debug.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/debug.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/debug.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/datasets/sample/rear_headlight_multi_pose.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/datasets/sample/rear_headlight_multi_pose.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/detectors/multi_pose.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/detectors/multi_pose.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/opts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/opts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/models/decode.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/models/decode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/trains/ctdet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/trains/ctdet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,56 +18,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/debug.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="108" column="182" selection-start-line="108" selection-start-column="182" selection-end-line="108" selection-end-column="182" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-243">
+              <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lib/datasets/sample/rear_headlight_multi_pose.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="94" column="34" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="15" column="15" lean-forward="true" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lib/opts.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="111" column="36" lean-forward="true" selection-start-line="111" selection-start-column="36" selection-end-line="111" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lib/utils/image.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="117" lean-forward="true" selection-start-line="117" selection-end-line="117" />
-              <folding>
-                <element signature="e#296#334#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lib/datasets/sample/multi_pose.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="76" column="36" lean-forward="true" selection-start-line="76" selection-start-column="36" selection-end-line="76" selection-end-column="36" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="97">
+              <caret line="42" column="29" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -82,23 +59,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>wh</find>
-      <find>reg_offset</find>
-      <find>arch</find>
-      <find>hm</find>
-      <find>crop</find>
-      <find>exp_</find>
-      <find>exp</find>
-      <find>exp_id</find>
-      <find>dataset</find>
-      <find>save_result</find>
-      <find>num</find>
-      <find>keypoint</find>
-      <find>num_samples</find>
-      <find>kpt_oks_sigmas</find>
-      <find>setKpParams</find>
-      <find>focal</find>
-      <find>EPOCH</find>
       <find>mean</find>
       <find>lr</find>
       <find>flip</find>
@@ -107,11 +67,28 @@
       <find>test_scales</find>
       <find>scale</find>
       <find>center_thresh</find>
-      <find>vis_thresh</find>
       <find>test</find>
       <find>test_scale</find>
-      <find>thresh</find>
       <find>trans_output</find>
+      <find>nms</find>
+      <find>thresh</find>
+      <find>soft_</find>
+      <find>vis_thresh</find>
+      <find>weight</find>
+      <find>DataParalle</find>
+      <find>model_with_loss</find>
+      <find>DataParallel</find>
+      <find>BN</find>
+      <find>model_urls</find>
+      <find>load_state_dict</find>
+      <find>thre</find>
+      <find>vis</find>
+      <find>hm_weight</find>
+      <find>off_weight</find>
+      <find>wh_weight</find>
+      <find>headlightVisible</find>
+      <find>hourgl</find>
+      <find>imread</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -124,7 +101,6 @@
         <option value="$PROJECT_DIR$/src/lib/models/model.py" />
         <option value="$PROJECT_DIR$/src/lib/models/losses.py" />
         <option value="$PROJECT_DIR$/src/lib/trains/base_trainer.py" />
-        <option value="$PROJECT_DIR$/src/lib/trains/ctdet.py" />
         <option value="$PROJECT_DIR$/src/lib/models/networks/msra_resnet.py" />
         <option value="$PROJECT_DIR$/src/lib/detectors/ctdet.py" />
         <option value="$PROJECT_DIR$/src/lib/datasets/dataset/kitti.py" />
@@ -137,7 +113,6 @@
         <option value="$PROJECT_DIR$/src/lib/external/setup.py" />
         <option value="$PROJECT_DIR$/src/lib/models/data_parallel.py" />
         <option value="$PROJECT_DIR$/src/lib/models/scatter_gather.py" />
-        <option value="$PROJECT_DIR$/src/lib/models/decode.py" />
         <option value="$PROJECT_DIR$/src/lib/models/utils.py" />
         <option value="$PROJECT_DIR$/src/lib/trains/ddd.py" />
         <option value="$PROJECT_DIR$/src/lib/trains/exdet.py" />
@@ -157,14 +132,18 @@
         <option value="$PROJECT_DIR$/src/lib/trains/train_factory.py" />
         <option value="$PROJECT_DIR$/src/lib/datasets/sample/multi_pose.py" />
         <option value="$PROJECT_DIR$/src/lib/trains/multi_pose.py" />
-        <option value="$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py" />
         <option value="$USER_HOME$/.local/lib/python3.6/site-packages/pycocotools-2.0-py3.6-linux-x86_64.egg/pycocotools/cocoeval.py" />
-        <option value="$PROJECT_DIR$/src/main.py" />
         <option value="$PROJECT_DIR$/src/debug.py" />
         <option value="$PROJECT_DIR$/src/lib/detectors/multi_pose.py" />
-        <option value="$PROJECT_DIR$/src/lib/datasets/sample/rear_headlight_multi_pose.py" />
         <option value="$PROJECT_DIR$/src/lib/detectors/base_detector.py" />
+        <option value="$PROJECT_DIR$/src/lib/external/nms.pyx" />
         <option value="$PROJECT_DIR$/src/lib/opts.py" />
+        <option value="$PROJECT_DIR$/src/lib/detectors/rearHeadLightDetector.py" />
+        <option value="$PROJECT_DIR$/src/lib/models/decode.py" />
+        <option value="$PROJECT_DIR$/src/lib/trains/ctdet.py" />
+        <option value="$PROJECT_DIR$/src/main.py" />
+        <option value="$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py" />
+        <option value="$PROJECT_DIR$/src/lib/datasets/sample/rear_headlight_multi_pose.py" />
         <option value="$PROJECT_DIR$/src/debug.txt" />
       </list>
     </option>
@@ -180,10 +159,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="992" />
-    <option name="y" value="24" />
-    <option name="width" value="928" />
-    <option name="height" value="1056" />
+    <option name="x" value="166" />
+    <option name="y" value="-4" />
+    <option name="width" value="1853" />
+    <option name="height" value="1083" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -206,12 +185,6 @@
               <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="coco" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
               <item name="rear_headlight" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -220,13 +193,6 @@
               <item name="data" type="462c0819:PsiDirectoryNode" />
               <item name="rear_headlight" type="462c0819:PsiDirectoryNode" />
               <item name="annotations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="rear_headlight" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
@@ -267,35 +233,7 @@
               <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="detectors" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="external" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
               <item name="trains" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CenterNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CenterNet" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -418,10 +356,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="7" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10262009" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15502183" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -432,7 +370,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.53556484" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.18514644" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.13389121" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -460,26 +398,6 @@
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/lib/detectors/ddd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/detectors/detector_factory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/detectors/exdet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="621">
@@ -530,16 +448,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/trains/exdet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="26" column="7" selection-start-line="26" selection-start-column="7" selection-end-line="26" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/utils/ddd_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="513">
@@ -580,33 +488,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="32" column="33" lean-forward="true" selection-start-line="32" selection-start-column="33" selection-end-line="32" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/external/nms.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/trains/ctdet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1512">
-          <caret line="30" column="44" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/_init_paths.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
@@ -617,34 +498,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/rear_headlight/annotations/train.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1863">
-          <caret line="132" column="13" lean-forward="true" selection-start-line="132" selection-start-column="13" selection-end-line="132" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/models/networks/msra_resnet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="115" column="47" selection-start-line="115" selection-start-column="47" selection-end-line="115" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/datasets/sample/ctdet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
           <caret line="128" column="37" selection-start-line="128" selection-start-column="35" selection-end-line="128" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/models/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -707,16 +564,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/trains/base_trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="59" column="70" selection-start-line="59" selection-start-column="70" selection-end-line="59" selection-end-column="70" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/pycocotools-2.0-py3.6-linux-x86_64.egg/pycocotools/cocoeval.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="619">
@@ -751,50 +598,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="54" column="47" selection-start-line="54" selection-start-column="47" selection-end-line="54" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/detectors/rearHeadLightDetector.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="72" selection-start-line="72" selection-end-line="72" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="28" column="22" lean-forward="true" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/trains/multi_pose.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-579">
-          <caret line="119" column="50" lean-forward="true" selection-start-line="119" selection-start-column="50" selection-end-line="119" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/detectors/multi_pose.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="69" selection-start-line="69" selection-end-line="69" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -808,23 +615,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="417">
           <caret line="11146" column="49" selection-start-line="11146" selection-start-column="49" selection-end-line="11146" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/debug.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="107" column="10" lean-forward="true" selection-start-line="107" selection-start-column="10" selection-end-line="107" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/detectors/base_detector.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="52" column="35" lean-forward="true" selection-start-line="52" selection-start-column="35" selection-end-line="52" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -857,6 +647,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/datasets/sample/multi_pose.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="67" column="43" lean-forward="true" selection-start-line="67" selection-start-column="43" selection-end-line="67" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/utils/image.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="283">
@@ -867,47 +667,178 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/opts.py">
+    <entry file="file://$PROJECT_DIR$/src/lib/detectors/ctdet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="111" column="36" lean-forward="true" selection-start-line="111" selection-start-column="36" selection-end-line="111" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/datasets/sample/multi_pose.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="76" column="36" lean-forward="true" selection-start-line="76" selection-start-column="36" selection-end-line="76" selection-end-column="36" />
+        <state>
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/datasets/sample/rear_headlight_multi_pose.py">
+    <entry file="file://$PROJECT_DIR$/src/lib/detectors/multi_pose.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="71" column="20" lean-forward="true" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/demo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/detectors/base_detector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1066">
+          <caret line="52" column="35" selection-start-line="52" selection-start-column="35" selection-end-line="52" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/external/nms.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="350" column="41" selection-start-line="350" selection-start-column="41" selection-end-line="350" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/trains/exdet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/CenterNet/lib/python3.6/site-packages/torch/nn/modules/module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-398">
+          <caret line="672" column="8" selection-start-line="672" selection-start-column="8" selection-end-line="672" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/models/networks/msra_resnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-297">
+          <caret line="112" column="26" selection-start-line="112" selection-start-column="26" selection-end-line="112" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/models/model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
-          <caret line="94" column="34" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/opts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-498">
+          <caret line="55" column="34" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/detectors/rearHeadLightDetector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="74" column="36" selection-start-line="74" selection-start-column="36" selection-end-line="74" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/trains/ctdet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/models/decode.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="600" column="38" lean-forward="true" selection-start-line="600" selection-start-column="38" selection-end-line="600" selection-end-column="38" />
+        <state relative-caret-position="422">
+          <caret line="627" column="8" selection-start-line="627" selection-start-column="8" selection-end-line="627" selection-end-column="8" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py">
+    <entry file="file://$PROJECT_DIR$/src/lib/trains/base_trainer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="15" column="15" lean-forward="true" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
+        <state relative-caret-position="161">
+          <caret line="44" column="36" selection-start-line="44" selection-start-column="31" selection-end-line="44" selection-end-column="36" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/trains/multi_pose.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-286">
+          <caret line="95" column="12" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/rear_headlight/annotations/train.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1227">
+          <caret line="651" column="4" lean-forward="true" selection-start-line="651" selection-start-column="4" selection-end-line="651" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/datasets/sample/rear_headlight_multi_pose.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="42" column="29" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/datasets/dataset/rear_headlight_hp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-243">
+          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/debug.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="108" column="182" selection-start-line="108" selection-start-column="182" selection-end-line="108" selection-end-column="182" />
         </state>
       </provider>
     </entry>

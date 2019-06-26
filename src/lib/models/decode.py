@@ -612,14 +612,15 @@ def multi_pose_decode(
             hm_ys = hm_ys + 0.5
 
         mask = (hm_score > thresh).float()  # pose thresh=0.1
-        hm_score = (1 - mask) * -1 + mask * hm_score
-        hm_ys = (1 - mask) * (-10000) + mask * hm_ys
-        hm_xs = (1 - mask) * (-10000) + mask * hm_xs
+        hm_score = (1 - mask) * -1 + mask * hm_score  # such as 0.7,0.8,-1
+        hm_ys = (1 - mask) * (-10000) + mask * hm_ys  # such as ys,ys,-XXXX
+        hm_xs = (1 - mask) * (-10000) + mask * hm_xs  # such as xs,xs,-XXXX
         hm_kps = torch.stack([hm_xs, hm_ys], dim=-1).unsqueeze(
             2).expand(batch, num_joints, K, K, 2)
         dist = (((reg_kps - hm_kps) ** 2).sum(dim=4) ** 0.5)
-        min_dist, min_ind = dist.min(dim=3)  # b x J x K
-        hm_score = hm_score.gather(2, min_ind).unsqueeze(-1)  # b x J x K x 1
+        min_dist, min_ind = dist.min(dim=3)  # b x J x K b*17*100
+        hm_score = hm_score.gather(2, min_ind).unsqueeze(-1)  # b x J x K x 1,b*17*100*1
+        print("hm_score:", hm_score, hm_score.shape)  # b*17*100*1
         min_dist = min_dist.unsqueeze(-1)
         min_ind = min_ind.view(batch, num_joints, K, 1, 1).expand(
             batch, num_joints, K, 1, 2)

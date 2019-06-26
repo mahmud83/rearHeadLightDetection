@@ -36,11 +36,11 @@ def main(opt):
 
     Trainer = train_factory[opt.task]
     trainer = Trainer(opt, model, optimizer)
-    trainer.set_device(opt.gpus, opt.chunk_sizes, opt.device)
+    trainer.set_device(opt.gpus, opt.chunk_sizes, opt.device)  # DataPa
 
     print('Setting up data...')
     val_loader = torch.utils.data.DataLoader(
-        Dataset(opt, 'train'),
+        Dataset(opt, 'test'),
         batch_size=1,
         shuffle=False,
         num_workers=1,
@@ -95,6 +95,9 @@ def main(opt):
             print('Drop LR to', lr)
             for param_group in optimizer.param_groups:
                 param_group['lr'] = lr
+        if epoch == opt.num_epochs:
+            _, preds = trainer.val(epoch, val_loader)
+            val_loader.dataset.run_eval(preds, opt.save_dir)
     logger.close()
 
 

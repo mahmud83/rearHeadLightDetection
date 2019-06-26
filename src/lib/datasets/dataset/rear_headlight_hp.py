@@ -36,7 +36,7 @@ class RearHeadLightHP(data.Dataset):
         # self.acc_idxs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
         self.data_dir = os.path.join(opt.data_dir, 'rear_headlight')
-        self.img_dir = os.path.join(self.data_dir, 'images', '{}'.format(split))
+        self.img_dir = os.path.join(self.data_dir, 'images')
         if split == 'test':
             self.annot_path = os.path.join(
                 self.data_dir, 'annotations',
@@ -89,7 +89,7 @@ class RearHeadLightHP(data.Dataset):
         images = []
         for i in range(num_images):
             img_info = {}
-            file_name = res[i]["filename"].split("//")[-1]
+            file_name = res[i]["filename"].split("\\")[-1]
             img = cv2.imread(os.path.join(self.img_dir, file_name))
             height, width = img.shape[0], img.shape[1]
             img_info['file_name'] = file_name

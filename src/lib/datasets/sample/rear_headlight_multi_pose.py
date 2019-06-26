@@ -42,7 +42,7 @@ class RearHeadLightMultiPoseDataset(data.Dataset):
         # ann_ids = self.coco.getAnnIds(imgIds=[img_id])
         # anns = self.coco.loadAnns(ids=ann_ids)
         annos = self.anno[index]
-        img_name = annos['filename'].split('//')[-1]
+        img_name = annos['filename'].split('\\')[-1]
         img_path = os.path.join(self.img_dir, img_name)
         num_objs = min(len(annos['annotations']), self.max_objs)
         img = cv2.imread(img_path)
